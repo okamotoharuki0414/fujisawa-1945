@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><title>藤沢1945</title><style>:root{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;color:#243b39;background:#f5f2ea;line-height:1.85}*{box-sizing:border-box}body{margin:0}button{font:inherit;cursor:pointer;color:inherit;background:#fff;border:1px solid #9ba9a2;border-radius:8px;padding:.65rem 1rem}button:hover{background:#e8f0ea}button:disabled{opacity:.5;cursor:wait}:focus-visible{outline:3px solid #a64b24;outline-offset:4px}a{color:#075e65;text-underline-offset:4px;overflow-wrap:anywhere}header{max-width:1200px;margin:auto;padding:2rem 3rem;border-bottom:1px solid #ccd3c9;display:flex;justify-content:space-between;align-items:center;gap:2rem}h1{font-family:serif;font-size:2.3rem;letter-spacing:.1em;margin:0}h2{font-family:serif;line-height:1.6}header p{margin:0}.eyebrow{font-size:.72rem;letter-spacing:.15em;font-weight:bold;color:#526b60}nav{display:flex;gap:.6rem;flex-wrap:wrap}main{max-width:1200px;margin:auto;padding:2.5rem 3rem;display:grid;grid-template-columns:280px minmax(0,1fr);gap:3.5rem}aside h2{font-size:1.8rem;margin:.7rem 0 1.5rem}aside{align-self:start;position:sticky;top:1rem}.small,footer{font-size:.8rem;color:#52635d}.badge{font-size:.75rem;border:1px solid #b7c7bd;border-radius:4px;padding:.1rem .4rem}label{display:block;font-size:.85rem}#count{float:right}progress{width:100%;accent-color:#35634f}.message{background:#fff;border:1px solid #d7ddd5;border-radius:4px 16px 16px 16px;padding:1.5rem;margin-bottom:1.3rem}.message h3{font-family:serif;font-size:1.25rem;margin:.5rem 0}.meta{display:flex;align-items:center;gap:.6rem;font-size:.8rem;color:#52635d}.body{white-space:pre-wrap;overflow-wrap:anywhere}.fact{border-left:4px solid #35634f}.reflection{border-left:4px solid #ac7441}.reply{text-align:right;margin:1rem 0 1.5rem;color:#355948;overflow-wrap:anywhere}.reply span{display:inline-block;background:#e4ece3;padding:.5rem 1rem;border-radius:12px 4px 12px 12px}#choices{display:grid;gap:.7rem}#choices button{text-align:left;border-color:#527361;padding:1rem 1.2rem}#status{font-size:.85rem;margin-bottom:1rem}footer{max-width:1200px;margin:auto;border-top:1px solid #ccd3c9;padding:1.5rem 3rem}dialog{position:fixed;margin:0 0 0 auto;max-height:100dvh;height:100dvh;max-width:560px;width:90vw;border:0;border-left:1px solid #aab9ae;padding:1.5rem;overflow-y:auto;background:#faf9f4}dialog::backdrop{background:#102e2855}.drawer-head{display:flex;justify-content:space-between;align-items:center;gap:1rem}.source{border-top:1px solid #ccd3c9;padding:1rem 0}.source dt{font-weight:bold;font-size:.8rem}.source dd{margin:0 0 .6rem;white-space:pre-wrap;overflow-wrap:anywhere}@media(max-width:760px){header{padding:1.4rem;align-items:flex-start;flex-direction:column;gap:1rem}main{padding:1.4rem;display:block}aside{position:static;margin-bottom:2rem}aside h2 br{display:none}aside h2{font-size:1.5rem}.message{padding:1.1rem}footer{padding:1.4rem}h1{font-size:2rem}}
+
+header>div{min-width:0}#subtitle{font-family:serif;font-size:1.05rem;margin-top:.5rem;overflow-wrap:anywhere}#audience{font-size:.85rem;margin-top:.5rem;max-width:44rem}header nav{flex-shrink:0}
+
+.document{display:block;max-width:900px}.document article{margin:2rem 0}.document p,.document li{overflow-wrap:anywhere}
+</style></head>
+<body><header><div><p class="eyebrow">歴史を読み、問いを選ぶ</p><h1 id="title">藤沢1945</h1><p id="subtitle">辻堂駅北側・旧住友特殊製鋼から、場所に残る戦争の記憶を読む</p><p id="audience">辻堂を通るSFC生へ。</p></div><nav aria-label="教材操作"><a href="materials.html">資料</a><a href="downloads.html">ダウンロード</a><button id="sources" disabled>出典を開く</button><button id="reset" disabled>最初から</button></nav></header>
+<main><aside><p class="eyebrow">READ / CHOOSE / REFLECT</p><h2>駅の北側に、<br>記憶をたどる。</h2><p id="notice">教材データを読み込んでいます。</p><p class="small">史実 ／ ガイド ／ 考察</p><label for="progress">閲覧進捗 <span id="count">0 / 0</span></label><progress id="progress" value="0" max="1"></progress><p class="small">今回閲覧したノード数です。選択によって未訪問の分岐が残ります。履歴はこの画面内だけで保持します。</p></aside><section aria-label="歴史チャット"><div id="status" role="status" aria-live="polite"></div><div id="history" aria-label="チャット履歴"></div><div id="choices" aria-label="現在の選択肢"></div></section></main>
+<footer><p>検索エンジン向けに noindex,nofollow を指定しています。これは非公開措置ではなく、URLを知る人は閲覧・保存できます。</p>画像・動画は出典の外部リンクから閲覧してください。この教材では転載しません。</footer>
+<dialog id="drawer" aria-labelledby="drawer-title"><div class="drawer-head"><h2 id="drawer-title">出典・資料</h2><button id="close-drawer">閉じる</button></div><p class="small">リンクは選択したときだけ外部サイトを開きます。利用条件を確認してください。</p><div id="source-list"></div></dialog><script id="embedded-data" type="application/json">{
+  "title": "藤沢1945 — 記録と声をたどる",
+  "notice": "生成AI利用：OpenAI Codex（実装・文章調整・史料照合・検証）、OpenClaw（史料整理・文章案・検証支援）。案内と選択肢は創作。証言は出典を示す直接引用です。",
+  "sources": [
+    {
+      "id": "S1",
+      "title": "総務省：2月10日の記録",
+      "url": "https://www.soumu.go.jp/main_sosiki/daijinkanbou/sensai/situation/state/kanto_23.html",
+      "passage": "昭和20（1945）年2月10日……B29の1機が御所見村の山林・畑地に爆弾を投下（被害なし）",
+      "scope": "御所見村は当時の行政区分。現在市域と1945年の藤沢市を混同しない。",
+      "rights": "本文の必要最小限の引用と要約。画像の転載なし。原典書籍は未実見。",
+      "verified": "2026-11-11 本文照合"
+    },
+    {
+      "id": "S2",
+      "title": "総務省：5月の空襲と集計範囲",
+      "url": "https://www.soumu.go.jp/main_sosiki/daijinkanbou/sensai/situation/state/kanto_23.html",
+      "passage": "5月24日から25日にかけての川崎・横浜（保土ヶ谷・神奈川・鶴見地区）空襲の余波を受け、藤沢署管内に焼夷弾360発が投下され、36戸が全焼、99人の罹災者を出した（神奈川県警察調査）。",
+      "scope": "藤沢署管内の集計。市全体の累計や5月29日だけの数値ではない。",
+      "rights": "本文の必要最小限の引用と要約。画像の転載なし。原典書籍は未実見。",
+      "verified": "2026-11-11 本文照合"
+    },
+    {
+      "id": "S3",
+      "title": "総務省：5月29日",
+      "url": "https://www.soumu.go.jp/main_sosiki/daijinkanbou/sensai/situation/state/kanto_23.html",
+      "passage": "また、5月29日の横浜大空襲の時は、藤沢署管内で1名の死者が出たという。",
+      "scope": "記録上の藤沢署管内。横浜全体の被害ではない。",
+      "rights": "本文の必要最小限の引用と要約。画像の転載なし。原典書籍は未実見。",
+      "verified": "2026-11-11 本文照合"
+    },
+    {
+      "id": "S4",
+      "title": "総務省：7月30日の工場空襲",
+      "url": "https://www.soumu.go.jp/main_sosiki/daijinkanbou/sensai/situation/state/kanto_23.html",
+      "passage": "7月30日午前8時10分頃から約30分間、艦載機約20機で小型爆弾（100キログラム位）20数発と、焼夷弾相当数が投下され、大型機関銃の掃射が加えられた。",
+      "scope": "3-2節の工場攻撃の記述。県下一覧の315機と同一範囲ではない。数・時刻は概数。 所在は総務省1節・3-1節の辻堂駅北口／東海道本線辻堂駅北側一帯に基づく。旧敷地境界は未同定。",
+      "rights": "本文の必要最小限の引用と要約。画像の転載なし。原典書籍は未実見。",
+      "verified": "2026-11-11 本文照合"
+    },
+    {
+      "id": "S5",
+      "title": "総務省：被害と実在の証言",
+      "url": "https://www.soumu.go.jp/main_sosiki/daijinkanbou/sensai/situation/state/kanto_23.html",
+      "passage": "防空壕に逃げ遅れた従業員4名が即死し、1名が重傷を負って翌日死亡した。",
+      "scope": "7月30日攻撃と翌日の死者を合算して5名。全市累計21名と区別。",
+      "rights": "本文の必要最小限の引用と要約。画像の転載なし。原典書籍は未実見。",
+      "verified": "2026-11-11 本文照合"
+    },
+    {
+      "id": "T1",
+      "title": "岩見高明氏の証言（総務省掲載）",
+      "url": "https://www.soumu.go.jp/main_sosiki/daijinkanbou/sensai/situation/state/kanto_23.html",
+      "passage": "爆弾の音というのは、自分がねらわれているような感じがします。",
+      "scope": "実在の証言者。総務省3-2節が『市民が語る十五年戦争』（藤沢市、2000年）より掲載。当時の感覚の回想であり一般化しない。原書は未実見。",
+      "rights": "本文の必要最小限の引用と要約。画像の転載なし。原典書籍は未実見。",
+      "verified": "2026-11-11 本文照合"
+    },
+    {
+      "id": "S6",
+      "title": "総務省：8月13日の再空襲",
+      "url": "https://www.soumu.go.jp/main_sosiki/daijinkanbou/sensai/situation/state/kanto_23.html",
+      "passage": "応急修理を終えて作業を再開しようとした8月13日、艦載機数機で再び空襲を受けた。このときは死傷者はなく、工場被害も軽微であった。",
+      "scope": "住友特殊製鋼の当該攻撃の範囲。市内全体の無被害を意味しない。",
+      "rights": "本文の必要最小限の引用と要約。画像の転載なし。原典書籍は未実見。",
+      "verified": "2026-11-11 本文照合"
+    },
+    {
+      "id": "S7",
+      "title": "総務省：8月15日と20日",
+      "url": "https://www.soumu.go.jp/main_sosiki/daijinkanbou/sensai/situation/state/kanto_23.html",
+      "passage": "15日、玉音放送を聞いたものの、その後をどのようにして過ごしたらよいかわからず、翌16日と17日に演習を行って過ごしている。そして8月20日に解散式を行い、藤沢海軍航空隊の歴史は終わった。",
+      "scope": "藤沢海軍航空隊の記録。全市民の行動や感情ではない。",
+      "rights": "本文の必要最小限の引用と要約。画像の転載なし。原典書籍は未実見。",
+      "verified": "2026-11-11 本文照合"
+    },
+    {
+      "id": "I1",
+      "title": "藤沢市文書館：空襲をうける工場",
+      "url": "https://digital.city.fujisawa.kanagawa.jp/digital/exhibition/data.php?id=12",
+      "passage": "空襲をうける工場　1945年7月30日",
+      "scope": "展示データid=12、資料番号1117、画像名tenji70024.jpg。画像自体の撮影者・利用許諾未確認。",
+      "rights": "展示への外部リンクのみ。画像の取得・転載・生成なし。",
+      "verified": "2026-11-11 本文照合"
+    },
+    {
+      "id": "V1",
+      "title": "藤沢市：戦争体験アーカイブ",
+      "url": "https://www.city.fujisawa.kanagawa.jp/jinkendanjyo/heiwa/sennsoutaikenna-kaibu.html",
+      "passage": "※各アーカイブ資料は、ご本人の証言に基づき作成しております。",
+      "scope": "掲載見出し：芝 実生子さん／藤沢市内での経験 ※藤沢市片瀬生まれ／30分48秒。今回は動画未視聴、発言を引用しない。",
+      "rights": "公式ページへリンクのみ。ダウンロード・再編集・転載なし。動画全員が藤沢で体験したわけではない。",
+      "verified": "2026-11-11 本文照合"
+    },
+    {
+      "id": "M1",
+      "title": "国土地理院：地理院地図",
+      "url": "https://maps.gsi.go.jp/#15/35.3369/139.4470/&base=std&ls=std&disp=1",
+      "passage": "地理院地図 （電子国土WEB）",
+      "scope": "現在の辻堂駅付近を地図で探す補助。工場旧敷地境界や撮影地点の同定は行っていない。",
+      "rights": "外部リンクのみ。同一地点・同一画角の新旧比較ではない。",
+      "verified": "2026-11-11 本文照合"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "start",
+      "date": "1945-02-10",
+      "title": "辻堂駅北側から、1945年の記録へ",
+      "text": "辻堂を通るSFC生のあなたへ。駅の北側にあった旧住友特殊製鋼を中心に、場所に残る戦争の記憶をたどります。工場の記録を読む前に、周辺の空襲と集計範囲を確認します。\nあなたは現代の学習者として資料を読みます。案内と選択肢は創作です。実在人物の役を演じたり、生死を得点化したりしません。旧敷地境界と撮影地点は未同定で、現地確認は未実施です。",
+      "kind": "guide",
+      "sourceIds": [
+        "S4"
+      ],
+      "choices": [
+        {
+          "label": "最初の記録を読む",
+          "next": "feb"
+        }
+      ]
+    },
+    {
+      "id": "feb",
+      "date": "1945-02-10",
+      "title": "いまの市域と当時の行政区分",
+      "text": "総務省の一覧には、2月10日、B29一機が御所見村の山林・畑地に爆弾を投下し、被害なしと記されています。御所見村をそのまま当時の藤沢市と呼び替えないことも、歴史を読む手がかりです。",
+      "kind": "fact",
+      "sourceIds": [
+        "S1"
+      ],
+      "choices": [
+        {
+          "label": "行政区分に注目して進む",
+          "next": "may"
+        },
+        {
+          "label": "関東とのつながりに注目して進む",
+          "next": "may"
+        }
+      ]
+    },
+    {
+      "id": "may",
+      "date": "1945-05-24",
+      "title": "5月24〜25日｜周辺空襲の余波",
+      "text": "川崎・横浜への空襲の余波で、藤沢署管内にも被害が記録されています。全焼36戸・罹災者99人という数字は、この期間の署管内の集計です。藤沢市の戦争全期間の合計とは違います。",
+      "kind": "fact",
+      "sourceIds": [
+        "S2"
+      ],
+      "choices": [
+        {
+          "label": "数字の範囲を確かめる",
+          "next": "scope"
+        },
+        {
+          "label": "次の日付へ進む",
+          "next": "yokohama"
+        }
+      ]
+    },
+    {
+      "id": "scope",
+      "date": "1945-05-25",
+      "title": "問い｜数字は何を数えている？",
+      "text": "【制作者による問い】同じ資料でも藤沢市・藤沢署管内・工場では集計の範囲が違います。数字を比べる前に、期間と地域を確認する読み方を選びました。",
+      "kind": "reflection",
+      "sourceIds": [
+        "S2"
+      ],
+      "choices": [
+        {
+          "label": "5月29日の記録へ",
+          "next": "yokohama"
+        }
+      ]
+    },
+    {
+      "id": "yokohama",
+      "date": "1945-05-29",
+      "title": "横浜大空襲と藤沢署管内",
+      "text": "総務省の記述では、5月29日の横浜大空襲の時、藤沢署管内で一名の死者が出たとされています。周辺都市の出来事が、藤沢の記録とつながっています。",
+      "kind": "fact",
+      "sourceIds": [
+        "S3"
+      ],
+      "choices": [
+        {
+          "label": "7月の辻堂へ",
+          "next": "july"
+        }
+      ]
+    },
+    {
+      "id": "july",
+      "date": "1945-07-30",
+      "title": "7月30日｜辻堂駅北側の工場",
+      "text": "住友特殊製鋼は7月30日朝に空襲を受けました。総務省3-2節は午前8時10分頃から約30分、艦載機約20機の攻撃と記しています。従業員四名が即死し、重傷の一名が翌日亡くなったとされています。",
+      "kind": "fact",
+      "sourceIds": [
+        "S4",
+        "S5"
+      ],
+      "choices": [
+        {
+          "label": "実在する証言を一節読む",
+          "next": "testimony"
+        },
+        {
+          "label": "文書館の写真資料から考える",
+          "next": "photo"
+        }
+      ]
+    },
+    {
+      "id": "testimony",
+      "date": "1945-07-30",
+      "title": "実在の証言｜岩見高明氏",
+      "text": "【直接引用・回想】岩見高明氏「爆弾の音というのは、自分がねらわれているような感じがします。」\n総務省掲載、書名：市民が語る十五年戦争（藤沢市、2000年）より（原書未実見）。氏は同工場へ勤労動員された証言者です。引用以外の会話は再現していません。",
+      "kind": "fact",
+      "sourceIds": [
+        "T1",
+        "S5"
+      ],
+      "choices": [
+        {
+          "label": "証言と写真の役割を比べる",
+          "next": "photo"
+        },
+        {
+          "label": "8月の記録へ進む",
+          "next": "aug"
+        }
+      ]
+    },
+    {
+      "id": "photo",
+      "date": "1945-07-30",
+      "title": "資料を見る｜写真と現在の地図",
+      "text": "【制作者による案内】出典を開くと、藤沢市文書館の「空襲をうける工場」（1945年7月30日）の展示情報と現在の地理院地図へ進めます。写真は転載していません。同一画角の新旧写真比較ではなく、辻堂駅北側という地域を調べる入口です。撮影地点や旧工場境界は未同定です。",
+      "kind": "guide",
+      "sourceIds": [
+        "I1",
+        "M1"
+      ],
+      "choices": [
+        {
+          "label": "8月13日の記録へ",
+          "next": "aug"
+        }
+      ]
+    },
+    {
+      "id": "aug",
+      "date": "1945-08-13",
+      "title": "8月13日｜再び空襲",
+      "text": "住友特殊製鋼は応急修理後、作業再開を目指していた8月13日に再び空襲を受けました。この攻撃について、総務省は死傷者なし、工場被害は軽微と記しています。生産は停止したまま敗戦を迎えたとされています。",
+      "kind": "fact",
+      "sourceIds": [
+        "S6"
+      ],
+      "choices": [
+        {
+          "label": "8月15日とその後へ",
+          "next": "endwar"
+        }
+      ]
+    },
+    {
+      "id": "endwar",
+      "date": "1945-08-15",
+      "title": "8月15日｜ただちに日常へ戻ったのか",
+      "text": "藤沢海軍航空隊では8月15日に玉音放送を聞き、その後16日・17日にも演習を行い、8月20日に解散式を行ったと記されています。これは航空隊の記録で、すべての市民の行動を表すものではありません。",
+      "kind": "fact",
+      "sourceIds": [
+        "S7"
+      ],
+      "choices": [
+        {
+          "label": "証言映像への入口を開く",
+          "next": "video"
+        },
+        {
+          "label": "学びをまとめる",
+          "next": "finish"
+        }
+      ]
+    },
+    {
+      "id": "video",
+      "date": "1945-08-20",
+      "title": "いま残される声｜公式映像への入口",
+      "text": "【制作者による案内】藤沢市の戦争体験アーカイブでは、芝実生子さんの「藤沢市内での経験」（片瀬生まれ、30分48秒）などが紹介されています。出典から公式ページへ移動できます。本制作では動画の内容を視聴確認していないため、発言の引用や特定の日付との関連付けはしていません。東京・横浜などでの体験も含まれ、すべてが藤沢の空襲証言ではありません。",
+      "kind": "guide",
+      "sourceIds": [
+        "V1"
+      ],
+      "choices": [
+        {
+          "label": "学びをまとめる",
+          "next": "finish"
+        }
+      ]
+    },
+    {
+      "id": "finish",
+      "date": "1945-08-20",
+      "title": "振り返り｜記録に立ち返る",
+      "text": "【制作者による問い】①地域や期間の違う数字を混同していませんか。②証言者の一人称と、制作者の案内を区別できましたか。③写真・動画の未確認部分を断言していませんか。\n選択で変わるのは調べる順路と視点だけです。史実や犠牲者の生死は変えません。\n辻堂駅北側へ視点を戻すと、何を確かめたいですか。旧工場の敷地境界や写真の撮影地点は、人手による史料調査・現地確認が必要です。原典書籍は未実見です。",
+      "kind": "reflection",
+      "sourceIds": [],
+      "choices": []
+    }
+  ],
+  "start": "start",
+  "subtitle": "辻堂駅北側・旧住友特殊製鋼から、場所に残る戦争の記憶を読む",
+  "audience": "辻堂を通るSFC生へ。見慣れた駅の北側を、工場の記録と一人の証言から読み直します。"
+}
+</script><script>"use strict";
+
+// UIとtest.mjsが同じ検査を使う。データはHTMLとして挿入しない。
+function validateData(data) {
+  const errors = [];
+  const check = (condition, message) => { if (!condition) errors.push(message); };
+  const str = value => typeof value === "string" && value.trim().length > 0;
+  const day = value => typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value) &&
+    Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value;
+  const https = value => { try { const u = new URL(value); return u.protocol === "https:" && !!u.hostname && !u.username && !u.password; } catch { return false; } };
+  if (!data || typeof data !== "object") return ["データはオブジェクトが必要です"];
+  check(str(data.title), "titleが必要です");
+  check(str(data.notice), "noticeが必要です");
+  if (!Array.isArray(data.nodes) || !Array.isArray(data.sources)) return [...errors, "nodesとsourcesは配列が必要です"];
+  check(data.nodes.length > 0, "nodesが空です");
+  const nodes = new Map(), sources = new Map();
+  for (const s of data.sources) {
+    if (!s || typeof s !== "object") { errors.push("出典形式が不正です"); continue; }
+    check(str(s.id) && !sources.has(s.id), "出典IDの欠落または重複");
+    sources.set(s.id, s);
+    for (const field of ["title", "url", "passage", "scope", "rights"]) check(str(s[field]), "出典 " + s.id + ": " + field + "が必要です");
+    check(https(s.url), "出典 " + s.id + ": URLは認証情報を含まないHTTPSが必要です");
+  }
+  let previousDate = "";
+  for (const n of data.nodes) {
+    if (!n || typeof n !== "object") { errors.push("ノード形式が不正です"); continue; }
+    check(str(n.id) && !nodes.has(n.id), "ノードIDの欠落または重複");
+    nodes.set(n.id, n);
+    check(str(n.title) && str(n.text), "ノード " + n.id + ": title/textが必要です");
+    check(day(n.date), "ノード " + n.id + ": dateは実在するYYYY-MM-DDが必要です");
+    check(!previousDate || n.date >= previousDate, "nodes配列が年代順ではありません: " + n.id);
+    previousDate = n.date;
+    check(["fact", "guide", "reflection"].includes(n.kind), "kindが不正です: " + n.id);
+    check(Array.isArray(n.sourceIds), "sourceIdsは配列が必要です: " + n.id);
+    check(Array.isArray(n.choices), "choicesは配列が必要です: " + n.id);
+    if (Array.isArray(n.sourceIds)) {
+      check(new Set(n.sourceIds).size === n.sourceIds.length, "出典参照の重複: " + n.id);
+      for (const id of n.sourceIds) check(sources.has(id), "参照出典がありません: " + n.id + " → " + id);
+      if (n.kind === "fact") check(n.sourceIds.length > 0, "史実には出典が必要です: " + n.id);
+      // 鉤括弧を使う直接引用候補は、参照先の抜粋に完全一致すること。
+      // 操作名も保守的に対象にするため、guideだけは引用検査対象外。
+      if (n.kind !== "guide" && typeof n.text === "string") {
+        for (const match of n.text.matchAll(/[「『]([^「」『』]+)[」』]/g)) {
+          check(n.sourceIds.some(id => typeof sources.get(id)?.passage === "string" && sources.get(id).passage.includes(match[1])),
+            "引用候補が出典抜粋にありません: " + n.id);
+        }
+      }
+    }
+    for (const match of String(n.text || "").matchAll(/https?:\/\/[^\s<>"「」]+/g)) check(https(match[0]), "本文URLはHTTPSが必要です: " + n.id);
+  }
+  check(str(data.start) && nodes.has(data.start), "startの参照先がありません");
+  for (const n of nodes.values()) {
+    if (!Array.isArray(n.choices)) continue;
+    for (const c of n.choices) {
+      check(c && str(c.label) && str(c.next), "選択肢形式が不正です: " + n.id);
+      if (!c) continue;
+      check(nodes.has(c.next), "分岐先がありません: " + n.id);
+      if (nodes.has(c.next)) check(nodes.get(c.next).date >= n.date, "分岐が時間を逆行します: " + n.id);
+    }
+  }
+  const visited = new Set(), active = new Set();
+  function visit(id) {
+    if (active.has(id)) { errors.push("循環分岐があります: " + id); return; }
+    if (visited.has(id) || !nodes.has(id)) return;
+    visited.add(id); active.add(id);
+    for (const c of nodes.get(id).choices || []) if (c) visit(c.next);
+    active.delete(id);
+  }
+  // 不正形式では探索せず、上の形式エラーを返す。
+  if ([...nodes.values()].every(n => Array.isArray(n.choices))) visit(data.start);
+  for (const id of nodes.keys()) check(visited.has(id), "startから到達できません: " + id);
+  return errors;
+}
+
+if (typeof document !== "undefined") {
+  const $ = id => document.getElementById(id);
+  const element = (tag, text, className) => {
+    const e = document.createElement(tag);
+    if (text !== undefined) e.textContent = text;
+    if (className) e.className = className;
+    return e;
+  };
+  let data, nodes, visited = new Set(), returnFocus;
+  const names = { fact: "史実", guide: "ガイド", reflection: "考察" };
+  function showSources(ids) {
+    returnFocus = document.activeElement;
+    $("source-list").replaceChildren();
+    const items = ids ? data.sources.filter(s => ids.includes(s.id)) : data.sources;
+    if (!items.length) $("source-list").append(element("p", "出典はまだ登録されていません。現在は操作確認用のガイドです。"));
+    for (const s of items) {
+      const card = element("article", undefined, "source");
+      card.append(element("h3", s.title));
+      const link = element("a", "資料を外部サイトで開く ↗");
+      link.href = s.url; link.target = "_blank"; link.rel = "noopener noreferrer"; link.referrerPolicy = "no-referrer";
+      card.append(link);
+      const dl = element("dl");
+      for (const [label, field] of [["該当箇所・抜粋", "passage"], ["この資料が裏付ける範囲", "scope"], ["権利・利用条件", "rights"]]) {
+        dl.append(element("dt", label), element("dd", s[field]));
+      }
+      card.append(dl); $("source-list").append(card);
+    }
+    $("drawer").showModal(); $("close-drawer").focus();
+  }
+  function render(id, focus) {
+    const n = nodes.get(id);
+    visited.add(id);
+    const card = element("article", undefined, "message " + n.kind);
+    const meta = element("div", undefined, "meta");
+    const date = element("time", (n.kind === "fact" ? "記録の日付：" : "読解順の基準日：") + n.date); date.dateTime = n.date;
+    meta.append(date, element("span", names[n.kind], "badge"));
+    const heading = element("h3", n.title); heading.tabIndex = -1;
+    card.append(meta, heading, element("p", n.text, "body"));
+    if (n.sourceIds.length) {
+      const button = element("button", "この記述の出典 (" + n.sourceIds.length + ")");
+      button.addEventListener("click", () => showSources(n.sourceIds));
+      card.append(button);
+    }
+    $("history").append(card);
+    $("choices").replaceChildren();
+    for (const choice of n.choices) {
+      const button = element("button", choice.label + " →");
+      button.addEventListener("click", () => {
+        const reply = element("p", undefined, "reply");
+        reply.append(element("span", choice.label)); $("history").append(reply);
+        render(choice.next, true);
+      });
+      $("choices").append(button);
+    }
+    $("progress").max = data.nodes.length; $("progress").value = visited.size;
+    $("count").textContent = visited.size + " / " + data.nodes.length;
+    $("status").textContent = n.title + "。閲覧 " + visited.size + " / " + data.nodes.length + (n.choices.length ? "。選択肢を選んでください。" : "。この分岐は終了です。");
+    if (focus) heading.focus();
+  }
+  $("close-drawer").addEventListener("click", () => $("drawer").close());
+  $("drawer").addEventListener("close", () => returnFocus?.focus());
+  $("sources").addEventListener("click", () => showSources());
+  $("reset").addEventListener("click", () => {
+    if (!window.confirm("履歴と進捗を消して、最初から始めますか？")) return;
+    visited = new Set(); $("history").replaceChildren(); render(data.start, true);
+  });
+  async function load() {
+    try {
+      const embedded = $("embedded-data");
+      let candidate;
+      if (embedded) {
+        candidate = JSON.parse(embedded.textContent);
+      } else {
+        const response = await fetch("./data.json", { cache: "no-store" });
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        candidate = await response.json();
+      }
+      const errors = validateData(candidate);
+      if (errors.length) throw new Error(errors.join("\n"));
+      data = candidate; nodes = new Map(data.nodes.map(n => [n.id, n]));
+      $("title").textContent = data.title; document.title = data.title;
+      $("notice").textContent = data.notice;
+      $("subtitle").textContent = data.subtitle || "";
+      $("audience").textContent = data.audience || "";
+      $("sources").disabled = false; $("reset").disabled = false;
+      render(data.start, false);
+    } catch (error) {
+      $("notice").textContent = "教材データを読み込めませんでした。READMEの手順でローカルサーバーを起動し、data.jsonを確認してください。";
+      $("status").textContent = "読み込みエラー: " + error.message;
+      const retry = element("button", "再読み込み");
+      retry.addEventListener("click", () => { $("choices").replaceChildren(); load(); });
+      $("choices").append(retry);
+    }
+  }
+  load();
+}
+</script></body></html>
