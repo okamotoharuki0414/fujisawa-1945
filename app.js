@@ -1,170 +1,27 @@
-"use strict";
-
-// UIとtest.mjsが同じ検査を使う。データはHTMLとして挿入しない。
-function validateData(data) {
-  const errors = [];
-  const check = (condition, message) => { if (!condition) errors.push(message); };
-  const str = value => typeof value === "string" && value.trim().length > 0;
-  const day = value => typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value) &&
-    Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value;
-  const https = value => { try { const u = new URL(value); return u.protocol === "https:" && !!u.hostname && !u.username && !u.password; } catch { return false; } };
-  if (!data || typeof data !== "object") return ["データはオブジェクトが必要です"];
-  check(str(data.title), "titleが必要です");
-  check(str(data.notice), "noticeが必要です");
-  if (!Array.isArray(data.nodes) || !Array.isArray(data.sources)) return [...errors, "nodesとsourcesは配列が必要です"];
-  check(data.nodes.length > 0, "nodesが空です");
-  const nodes = new Map(), sources = new Map();
-  for (const s of data.sources) {
-    if (!s || typeof s !== "object") { errors.push("出典形式が不正です"); continue; }
-    check(str(s.id) && !sources.has(s.id), "出典IDの欠落または重複");
-    sources.set(s.id, s);
-    for (const field of ["title", "url", "passage", "scope", "rights"]) check(str(s[field]), "出典 " + s.id + ": " + field + "が必要です");
-    check(https(s.url), "出典 " + s.id + ": URLは認証情報を含まないHTTPSが必要です");
-  }
-  let previousDate = "";
-  for (const n of data.nodes) {
-    if (!n || typeof n !== "object") { errors.push("ノード形式が不正です"); continue; }
-    check(str(n.id) && !nodes.has(n.id), "ノードIDの欠落または重複");
-    nodes.set(n.id, n);
-    check(str(n.title) && str(n.text), "ノード " + n.id + ": title/textが必要です");
-    check(day(n.date), "ノード " + n.id + ": dateは実在するYYYY-MM-DDが必要です");
-    check(!previousDate || n.date >= previousDate, "nodes配列が年代順ではありません: " + n.id);
-    previousDate = n.date;
-    check(["fact", "guide", "reflection"].includes(n.kind), "kindが不正です: " + n.id);
-    check(Array.isArray(n.sourceIds), "sourceIdsは配列が必要です: " + n.id);
-    check(Array.isArray(n.choices), "choicesは配列が必要です: " + n.id);
-    if (Array.isArray(n.sourceIds)) {
-      check(new Set(n.sourceIds).size === n.sourceIds.length, "出典参照の重複: " + n.id);
-      for (const id of n.sourceIds) check(sources.has(id), "参照出典がありません: " + n.id + " → " + id);
-      if (n.kind === "fact") check(n.sourceIds.length > 0, "史実には出典が必要です: " + n.id);
-      // 鉤括弧を使う直接引用候補は、参照先の抜粋に完全一致すること。
-      // 操作名も保守的に対象にするため、guideだけは引用検査対象外。
-      if (n.kind !== "guide" && typeof n.text === "string") {
-        for (const match of n.text.matchAll(/[「『]([^「」『』]+)[」』]/g)) {
-          check(n.sourceIds.some(id => typeof sources.get(id)?.passage === "string" && sources.get(id).passage.includes(match[1])),
-            "引用候補が出典抜粋にありません: " + n.id);
-        }
-      }
-    }
-    for (const match of String(n.text || "").matchAll(/https?:\/\/[^\s<>"「」]+/g)) check(https(match[0]), "本文URLはHTTPSが必要です: " + n.id);
-  }
-  check(str(data.start) && nodes.has(data.start), "startの参照先がありません");
-  for (const n of nodes.values()) {
-    if (!Array.isArray(n.choices)) continue;
-    for (const c of n.choices) {
-      check(c && str(c.label) && str(c.next), "選択肢形式が不正です: " + n.id);
-      if (!c) continue;
-      check(nodes.has(c.next), "分岐先がありません: " + n.id);
-      if (nodes.has(c.next)) check(nodes.get(c.next).date >= n.date, "分岐が時間を逆行します: " + n.id);
-    }
-  }
-  const visited = new Set(), active = new Set();
-  function visit(id) {
-    if (active.has(id)) { errors.push("循環分岐があります: " + id); return; }
-    if (visited.has(id) || !nodes.has(id)) return;
-    visited.add(id); active.add(id);
-    for (const c of nodes.get(id).choices || []) if (c) visit(c.next);
-    active.delete(id);
-  }
-  // 不正形式では探索せず、上の形式エラーを返す。
-  if ([...nodes.values()].every(n => Array.isArray(n.choices))) visit(data.start);
-  for (const id of nodes.keys()) check(visited.has(id), "startから到達できません: " + id);
-  return errors;
-}
-
-if (typeof document !== "undefined") {
-  const $ = id => document.getElementById(id);
-  const element = (tag, text, className) => {
-    const e = document.createElement(tag);
-    if (text !== undefined) e.textContent = text;
-    if (className) e.className = className;
-    return e;
-  };
-  let data, nodes, visited = new Set(), returnFocus;
-  const names = { fact: "史実", guide: "ガイド", reflection: "考察" };
-  function showSources(ids) {
-    returnFocus = document.activeElement;
-    $("source-list").replaceChildren();
-    const items = ids ? data.sources.filter(s => ids.includes(s.id)) : data.sources;
-    if (!items.length) $("source-list").append(element("p", "出典はまだ登録されていません。現在は操作確認用のガイドです。"));
-    for (const s of items) {
-      const card = element("article", undefined, "source");
-      card.append(element("h3", s.title));
-      const link = element("a", "資料を外部サイトで開く ↗");
-      link.href = s.url; link.target = "_blank"; link.rel = "noopener noreferrer"; link.referrerPolicy = "no-referrer";
-      card.append(link);
-      const dl = element("dl");
-      for (const [label, field] of [["該当箇所・抜粋", "passage"], ["この資料が裏付ける範囲", "scope"], ["権利・利用条件", "rights"]]) {
-        dl.append(element("dt", label), element("dd", s[field]));
-      }
-      card.append(dl); $("source-list").append(card);
-    }
-    $("drawer").showModal(); $("close-drawer").focus();
-  }
-  function render(id, focus) {
-    const n = nodes.get(id);
-    visited.add(id);
-    const card = element("article", undefined, "message " + n.kind);
-    const meta = element("div", undefined, "meta");
-    const date = element("time", (n.kind === "fact" ? "記録の日付：" : "読解順の基準日：") + n.date); date.dateTime = n.date;
-    meta.append(date, element("span", names[n.kind], "badge"));
-    const heading = element("h3", n.title); heading.tabIndex = -1;
-    card.append(meta, heading, element("p", n.text, "body"));
-    if (n.sourceIds.length) {
-      const button = element("button", "この記述の出典 (" + n.sourceIds.length + ")");
-      button.addEventListener("click", () => showSources(n.sourceIds));
-      card.append(button);
-    }
-    $("history").append(card);
-    $("choices").replaceChildren();
-    for (const choice of n.choices) {
-      const button = element("button", choice.label + " →");
-      button.addEventListener("click", () => {
-        const reply = element("p", undefined, "reply");
-        reply.append(element("span", choice.label)); $("history").append(reply);
-        render(choice.next, true);
-      });
-      $("choices").append(button);
-    }
-    $("progress").max = data.nodes.length; $("progress").value = visited.size;
-    $("count").textContent = visited.size + " / " + data.nodes.length;
-    $("status").textContent = n.title + "。閲覧 " + visited.size + " / " + data.nodes.length + (n.choices.length ? "。選択肢を選んでください。" : "。この分岐は終了です。");
-    if (focus) heading.focus();
-  }
-  $("close-drawer").addEventListener("click", () => $("drawer").close());
-  $("drawer").addEventListener("close", () => returnFocus?.focus());
-  $("sources").addEventListener("click", () => showSources());
-  $("reset").addEventListener("click", () => {
-    if (!window.confirm("履歴と進捗を消して、最初から始めますか？")) return;
-    visited = new Set(); $("history").replaceChildren(); render(data.start, true);
-  });
-  async function load() {
-    try {
-      const embedded = $("embedded-data");
-      let candidate;
-      if (embedded) {
-        candidate = JSON.parse(embedded.textContent);
-      } else {
-        const response = await fetch("./data.json", { cache: "no-store" });
-        if (!response.ok) throw new Error("HTTP " + response.status);
-        candidate = await response.json();
-      }
-      const errors = validateData(candidate);
-      if (errors.length) throw new Error(errors.join("\n"));
-      data = candidate; nodes = new Map(data.nodes.map(n => [n.id, n]));
-      $("title").textContent = data.title; document.title = data.title;
-      $("notice").textContent = data.notice;
-      $("subtitle").textContent = data.subtitle || "";
-      $("audience").textContent = data.audience || "";
-      $("sources").disabled = false; $("reset").disabled = false;
-      render(data.start, false);
-    } catch (error) {
-      $("notice").textContent = "教材データを読み込めませんでした。READMEの手順でローカルサーバーを起動し、data.jsonを確認してください。";
-      $("status").textContent = "読み込みエラー: " + error.message;
-      const retry = element("button", "再読み込み");
-      retry.addEventListener("click", () => { $("choices").replaceChildren(); load(); });
-      $("choices").append(retry);
-    }
-  }
-  load();
-}
+(async()=>{
+const $=id=>document.getElementById(id),G=globalThis.Game,KEY='tsujido-memory-v2';let data,media=null,state=G.initial(),returnFocus=null,memoryOnly=false;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+try{data=globalThis.EMBEDDED_DATA||await fetch('data.json').then(r=>{if(!r.ok)throw Error();return r.json()});if(!Array.isArray(data.sources))throw Error();}catch{$('main').innerHTML='<h1>資料を読み込めませんでした</h1><p>接続を確認して再読み込みするか、単独で動く offline.html を開いてください。</p>';return}
+try{const saved=JSON.parse(localStorage.getItem(KEY));if(saved&&Array.isArray(saved.cards)){state={...G.initial(),cards:[...new Set(saved.cards.filter(id=>G.cards.some(c=>c.id===id)))]};}}catch{memoryOnly=true}
+if(globalThis.EMBEDDED_MEDIA)media=globalThis.EMBEDDED_MEDIA;else if(!globalThis.OFFLINE){try{media=await fetch('media.json').then(r=>r.ok?r.json():null)}catch{}}
+const art=name=>`<img class="art" src="assets/${name}.svg" alt="${({station:'駅舎と線路',factory:'工場を象徴する建物',shelves:'色の違う本の並ぶ書架',notebook:'開いたノート'})[name]}の創作概念図">`;
+const sourceButtons=ids=>ids.map(id=>`<button class="source" data-source="${id}">出典 ${id}</button>`).join(' ');
+const cardHTML=c=>`<article class="card"><span class="tag">${({number:'数字と範囲',voice:'声と引用',place:'場所と時間'})[c.view]}</span><h3>${esc(c.title)}</h3>${c.quote?`<blockquote>${esc(c.text)}</blockquote><p class="small">岩見高明氏の回想。総務省掲載『市民が語る十五年戦争』（藤沢市、2000年）より。原書未実見。</p>`:`<p>${esc(c.text)}</p>`}${sourceButtons(c.sources)}</article>`;
+function photoHTML(){const p=media?.photos?.[0];if(!p)return '';return `<details class="paper landscape"><summary>風景を見る — 2022年の駅北口</summary><figure><img src="${esc(globalThis.EMBEDDED_ASSETS?.photo||p.src)}" alt="${esc(p.alt)}"><figcaption>${esc(p.caption)} 1945年との同一画角比較ではありません。旧工場境界・撮影位置の対応は未同定。<br>作者 Nesnad ／ <a href="${esc(p.sourceUrl)}" target="_blank" rel="noopener noreferrer">元画像ページ</a> ／ <a href="${esc(p.licenseUrl)}" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>。原画像無改変・縮小表示。</figcaption></figure></details>`}
+function timelineHTML(){const rail=[['2/10','after','nearby','S1'],['5/24–25','scope','nearby','S2'],['5/29','scope','nearby','S3'],['7/30','attack','factory','S4'],['8/13','loss','factory','S6'],['8/15–20','after','nearby','S7']];return `<section aria-label="史料の日付"><h2>記録の時系列</h2><p class="small">1945年。色のついた日付は関連カードを取得済み。</p><ol class="timeline">${rail.map(([date,id,place,source])=>{const related=source==='S4'?['boundary','image','attack','loss','voice']: [id];const has=related.some(card=>state.cards.includes(card));return `<li class="${has?'owned':''}"><strong>${date}</strong><span>${source}</span>${has?`<button data-source="${source}">記録済・出典</button>`:`<button data-place="${place}">探しに行く</button>`}</li>`}).join('')}</ol></section>`}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({cards:state.cards}))}catch{memoryOnly=true}}
+function go(screen){state.screen=screen;render()}
+function render(){let html='';const owned=G.cards.filter(c=>state.cards.includes(c.id));
+if(state.screen==='title')html=`<section class="hero"><div><p class="eyebrow">辻堂を歩く、歴史探索ノート</p><h1 class="title"><span>線路のむこう、</span><span>記憶の余白</span></h1><p>今の辻堂を訪れたあなたへ。場所を選び、問いを選び、記録のかけらをノートに集めよう。3枚集めたら、あなたの読み方を結ぶ。</p><button class="primary" data-go="map">${owned.length?'探索を再開する':'ノートを開いて、はじめる'}</button><p class="small">案内役は現代の「ノートの声」（作者解説）です。</p></div>${art('station')}</section>`;
+if(state.screen==='map')html=`<p class="eyebrow">EXPLORE / 現代から記録へ</p><h1>どこから、読もう。</h1><p>散歩道の地点を選んで探索。順番は自由です。位置・距離は正確な地理ではない創作概念図です。</p><div class="map" aria-label="探索地点の概念地図。位置・距離は実際の地理と異なります"><img class="map-landscape" src="assets/walk-map.svg" alt="散歩道、線路、樹木を描いた創作概念図">${G.places.map(p=>`<button data-place="${p.id}"><img src="assets/${p.art}.svg" alt=""><span><strong>${p.name}</strong><br><small>${p.choices.filter(c=>state.cards.includes(c[1])).length}/2 枚を記録</small></span></button>`).join('')}</div><div class="actions"><button data-go="notebook">ノートを見る（${owned.length}枚）</button><button class="primary" data-go="interpret" ${owned.length<3?'disabled':''}>読み方を結ぶ</button></div>${owned.length<3?`<p class="small">あと${3-owned.length}枚で終幕へ。全カードを集める必要はありません。</p>`:''}`;
+if(state.screen==='place'){const p=G.places.find(p=>p.id===state.place);html=`<section class="hero"><div><p class="eyebrow">探索 / ${p.name}</p><h1>${state.step?'何を残そう。':p.name}</h1><p>${esc(state.step?p.beat:p.intro)}</p><div class="actions">${state.step?p.choices.map(([label,id])=>`<button data-collect="${id}">${label}${state.cards.includes(id)?'（記録済み）':''}</button>`).join(''):'<button id="next" class="primary">ページをめくる</button><button id="skip-beat">案内をスキップして選ぶ</button>'}</div><button class="source" data-go="map">地図へ戻る</button></div>${art(p.art)}</section>${p.id==='station'?photoHTML():''}`} 
+if(state.screen==='card'){const c=G.cards.find(c=>c.id===state.selected);html=`<p class="eyebrow">手がかりをノートに記録</p><section class="acquired">${cardHTML(c)}</section><div class="actions"><button class="primary" data-go="map">地図に戻って探索</button><button id="another">この場所の別の問いへ</button><button data-go="notebook">ノートを見る</button></div>${['boundary','image'].includes(c.id)?photoHTML():''}${c.id==='archive'?'<section class="paper"><h2>公式動画への入口</h2><p>芝実生子さんの公式映像。冒頭の再生動作のみ確認、全編は未確認。</p><p>読み込み前には第三者への通信はありません。「公式映像をひらく」でYouTubeに接続します。自動再生せず、開始はプレイヤーでの本人操作です。外部動画にはインターネット接続が必要です。</p><button id="load-video">公式映像をひらく</button><div id="video-slot"></div><p><a href="'+esc(data.sources.find(s=>s.id==='V1').url)+'" target="_blank" rel="noopener noreferrer">藤沢市の公式ページで開く</a> ／ <a href="https://www.youtube.com/watch?v=UIpoMfa5rX0" target="_blank" rel="noopener noreferrer">YouTubeで開く</a></p></section>':''}`}
+if(state.screen==='notebook'){html=`<p class="eyebrow">YOUR NOTEBOOK</p><h1>残した、${owned.length}枚。</h1><p>未取得の視点は、次の探索へのヒントです。</p>${timelineHTML()}<div class="paper">${['number','voice','place'].map(v=>{const n=owned.filter(c=>c.view===v).length;return `<p>${({number:'数字と範囲 → 工場記録・周辺の記録',voice:'声と引用 → 声の書架',place:'場所と時間 → 駅北側・周辺の記録'})[v]}：${n?n+'枚':'まだ白紙'}</p>`}).join('')}</div><div class="actions"><button data-go="map">探索へ戻る</button><button class="primary" data-go="interpret" ${owned.length<3?'disabled':''}>${owned.length<3?'あと'+(3-owned.length)+'枚で結べます':'読み方を結ぶ'}</button></div><div class="cards">${owned.map(cardHTML).join('')}</div>`}
+if(state.screen==='interpret'){if(owned.length<3){go('notebook');return}html=`<p class="eyebrow">INTERPRET / 作者からの問い</p><h1>何を、持ち帰る？</h1><p>選ぶのは史実の結末ではなく、あなたが記録を読む視点です。</p>${Object.entries(G.endings).map(([v,e])=>`<section class="paper"><h2>${e.title.replace('終幕｜','')}</h2><p>この視点の手がかり：${owned.filter(c=>c.view===v).length}枚。${owned.some(c=>c.view===v)?'持っているカードで根拠を振り返ります。':'まだ根拠が足りません。終幕では空白を次の問いとして残します。'}</p><button data-end="${v}">この読み方で結ぶ</button></section>`).join('')}<button data-go="map">もう少し探索する</button>`}
+if(state.screen==='ending'){const e=G.endings[state.ending],support=owned.filter(c=>c.view===state.ending);html=`<p class="eyebrow">あなたのノートの終幕 / 作者による解釈</p><h1>${e.title.replace('終幕｜','')}</h1><p>${e.text}</p><section class="paper"><h2>${support.length?'あなたが選んだ根拠':'根拠の空白も、記録する'}</h2><p>${support.length?`${support.length}枚がこの読み方を支えています。カードごとに出典と射程を確認できます。`:'この視点のカードはまだありません。これは史料に裏付けられた結論ではなく、あなたが次に調べたい問いです。地図に戻って根拠を探せます。'}</p>${support.map(cardHTML).join('')}<p>${e.question}</p>${owned.some(c=>c.view!==state.ending)?`<p>別の視点で集めたカード：${owned.filter(c=>c.view!==state.ending).map(c=>esc(c.title)).join('、')}。この終幕だけでは、それらの記録を語り尽くせません。</p>`:''}</section><div class="actions"><button class="primary" data-go="map">地図へ戻り、続きを探す</button><button data-go="interpret">別の読み方を試す</button><button data-go="notebook">ノート全体へ</button></div><section class="paper"><h2>この作品について</h2><p>${esc(data.notice)}</p><p>イラストは作者制作のSVGによる創作概念図。史実写真・1945年復元ではありません。実在人物の会話を創作していません。史料台帳の本文照合範囲を使用し、原典書籍・現地は未確認。公式動画は冒頭の再生動作のみ確認、全編は未確認です。</p><p>保存はこのブラウザーの端末内のみ。送信しません。「記録を消す」で確認後に削除できます。${memoryOnly?'この環境では保存を利用できず、画面内だけに保持しています。':''}</p><a href="materials.html">資料・制作情報へ</a> <button class="source" data-all-sources>全出典を見る</button></section>`}
+$('main').innerHTML=html;bind();$('main').focus();$('status').textContent=state.screen==='card'?`「${G.cards.find(c=>c.id===state.selected).title}」を記録。ノート${owned.length}枚。`:({map:'探索地図',notebook:'ノート',ending:'終幕',place:'探索場面',interpret:'解釈を選択',title:'タイトル'})[state.screen];}
+function bind(){document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));document.querySelectorAll('[data-place]').forEach(b=>b.onclick=()=>{state.place=b.dataset.place;state.step=0;go('place')});document.querySelectorAll('[data-collect]').forEach(b=>b.onclick=()=>{state=G.collect(state,b.dataset.collect);save();render()});document.querySelectorAll('[data-end]').forEach(b=>b.onclick=()=>{state=G.conclude(state,b.dataset.end);render()});document.querySelectorAll('[data-source]').forEach(b=>b.onclick=()=>openSources([b.dataset.source],b));document.querySelectorAll('[data-all-sources]').forEach(b=>b.onclick=()=>openSources(data.sources.map(s=>s.id),b));for(const id of ['next','skip-beat'])if($(id))$(id).onclick=()=>{state.step=1;render()};if($('another'))$('another').onclick=()=>{state.step=1;go('place')};if($('load-video'))$('load-video').onclick=loadVideo;}
+function openSources(ids,opener){returnFocus=opener;$('source-list').innerHTML=ids.map(id=>{const s=data.sources.find(s=>s.id===id);return `<article><h3>${esc(s.id+' '+s.title)}</h3><a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">公式の出典を開く</a><p>${esc(s.passage)}</p><p>範囲：${esc(s.scope)}</p><p class="small">${esc(s.rights)} / ${esc(s.verified)}</p></article>`}).join('');$('drawer').showModal()}
+function loadVideo(){const item=media?.videos?.find(v=>v.sourceId==='V1');let url;try{url=new URL(item?.embedUrl)}catch{}const allowed=url&&url.protocol==='https:'&&['www.youtube-nocookie.com','www.youtube.com'].includes(url.hostname)&&/^\/embed\/[\w-]+$/.test(url.pathname);if(!allowed){$('video-slot').textContent='再生確認未了。埋込用の公式動画情報が未配置です。下の公式ページをご利用ください。';return}url.search='';url.searchParams.set('autoplay','0');url.searchParams.set('rel','0');const frame=document.createElement('iframe');frame.src=url.href;frame.title=item.title||'藤沢市の公式戦争体験映像';frame.allow='fullscreen';frame.referrerPolicy='strict-origin-when-cross-origin';$('video-slot').replaceChildren(frame);const note=document.createElement('p');note.textContent=item.playbackVerified===true?'冒頭の再生動作のみ確認、全編は未確認。開始はプレイヤーで操作してください。':'再生確認未了。読み込めない場合は公式ページをご利用ください。';$('video-slot').prepend(note)}
+$('map').onclick=()=>go('map');$('notes').onclick=()=>go('notebook');$('sources').onclick=()=>openSources(data.sources.map(s=>s.id),$('sources'));$('close-drawer').onclick=()=>$('drawer').close();$('drawer').addEventListener('close',()=>returnFocus?.focus());$('motion').onclick=()=>{const on=document.body.classList.toggle('reduced');$('motion').setAttribute('aria-pressed',String(on));};$('reset').onclick=()=>{if(!confirm('この端末のノートをすべて削除します。よろしいですか？'))return;try{localStorage.removeItem(KEY)}catch{}state=G.initial();render();$('status').textContent='この端末のノートを削除しました。'};document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('drawer').open&&state.screen!=='title')go('map')});render();
+})();

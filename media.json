@@ -1,0 +1,32 @@
+{
+  "photos": [
+    {
+      "id": "P1",
+      "src": "assets/tsujido-north-2022.jpg",
+      "alt": "辻堂駅北口の駅舎と歩行者デッキ、2022年の景観",
+      "caption": "2022年の辻堂駅北口。1945年の写真や2026年の現況ではありません。",
+      "credit": "Nesnad / Wikimedia Commons / CC BY 4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tsujido_Station_north_exit_-_2022_Aug_22_various_17_27_30_473000.jpeg",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "date": "2022-08-22",
+      "changes": "画像ファイル無改変、縮小表示。旧工場敷地/撮影位置との対応は未同定。"
+    }
+  ],
+  "videos": [
+    {
+      "id": "V2",
+      "title": "芝実生子さんの声に出会う",
+      "embedUrl": "https://www.youtube.com/embed/UIpoMfa5rX0?autoplay=0&rel=0",
+      "watchUrl": "https://www.youtube.com/watch?v=UIpoMfa5rX0",
+      "officialUrl": "https://www.city.fujisawa.kanagawa.jp/jinkendanjyo/heiwa/sennsoutaikenna-kaibu.html",
+      "credit": "藤沢市 広報シティプロモーション課 ふじさわ情報ナビ",
+      "caption": "公式証言動画。藤沢市内での経験／片瀬生まれ。全編の内容確認は未了、ゲーム内の新しい史実や発言の根拠にはしていません。",
+      "playbackStatus": "2026-11-11 公開オリジンiframeでクリック再生、currentTime7.46秒・duration1856.34秒・readyState4を実測。全編未視聴。",
+      "rights": "公式YouTubeプレイヤーでの埋込のみ。動画・音声・サムネイルを再配布しない。",
+      "autoplay": false,
+      "sourceId": "V1",
+      "playbackVerified": true,
+      "verificationScope": "冒頭の再生動作のみ確認、全編は未確認"
+    }
+  ]
+}
