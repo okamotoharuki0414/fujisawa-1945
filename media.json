@@ -23,10 +23,7 @@
       "caption": "公式証言動画。藤沢市内での経験／片瀬生まれ。全編の内容確認は未了、ゲーム内の新しい史実や発言の根拠にはしていません。",
       "playbackStatus": "2026-11-11 公開オリジンiframeでクリック再生、currentTime7.46秒・duration1856.34秒・readyState4を実測。全編未視聴。",
       "rights": "公式YouTubeプレイヤーでの埋込のみ。動画・音声・サムネイルを再配布しない。",
-      "autoplay": false,
-      "sourceId": "V1",
-      "playbackVerified": true,
-      "verificationScope": "冒頭の再生動作のみ確認、全編は未確認"
+      "autoplay": false
     }
   ]
 }
