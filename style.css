@@ -54,3 +54,14 @@
  .dialogue{box-sizing:border-box}
  .visitor-speech.spoken::after{border-width:8px}
 }
+
+/* Chapter arrivals are visually distinct from conversation, without an extra click. */
+.scene-location{grid-column:1/-1;font-size:.9rem;letter-spacing:.05em;color:#cbd9d7;margin:.35rem 0}
+.chapter.chapter-arrival{display:block;border-block:1px solid #9bb2ad;padding:1.4rem 1.5rem;margin:0 0 1.4rem;background:#17343c}
+.chapter-arrival>p{font-size:clamp(1.3rem,3vw,2rem);color:#f2dfb3;margin:0 0 .4rem}
+.chapter-arrival h1{font-size:clamp(1.25rem,3vw,1.9rem);margin:.3rem 0}
+.chapter-arrival>span{display:block;font-size:.75rem;color:#b8c9c6;margin:.5rem 0}
+.scene-bridge{border-top:1px solid #5c7778;margin-top:1rem;padding-top:.8rem;line-height:1.8;color:#f4f0e6;font-size:1rem}
+.scene-bridge b{display:block;letter-spacing:.16em;font-size:.7rem;color:#d5c59f;margin-bottom:.3rem}
+.place-card{border-top:1px solid #94aaa5;padding:1.2rem 0}.place-card h3{margin:.3rem 0}.place-card small{color:#b8c9c6}
+@media(max-width:600px){.chapter.chapter-arrival{padding:1rem;margin-bottom:1rem}.scene-bridge{font-size:.95rem}}
