@@ -22,3 +22,15 @@
 .resident{animation:resident-enter .65s ease-out}@keyframes resident-enter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
 .touch-help{display:none}@media(max-width:760px){.resident{height:340px}.visual:has(.resident){min-height:340px}.keyboard-help{display:none}.touch-help{display:inline}}
+
+/* Connect the bubble to the portrait only while that resident speaks. */
+.dialogue .label{display:flex;align-items:baseline;flex-wrap:wrap;gap:.35rem .75rem;letter-spacing:normal}
+.dialogue .label strong{font-size:1.2rem;color:#20353e}
+.dialogue .label span{font-size:.75rem}
+.resident-speech::before{content:"";position:absolute;right:100%;top:2rem;border:12px solid transparent;border-right-color:#f3eee3;border-left:0}
+.visitor-speech{background:#e0ebee;border-left:5px solid #4d7382}
+@media(max-width:900px){
+  .visual:has(.resident){min-height:0;display:grid;justify-items:center}
+  .visual .resident{height:clamp(170px,29vh,245px);margin:0}
+  .resident-speech::before{top:auto;bottom:100%;right:calc(50% - 12px);border:12px solid transparent;border-bottom-color:#f3eee3;border-top:0}
+}
