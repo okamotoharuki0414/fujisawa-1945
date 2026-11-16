@@ -1,0 +1,32 @@
+{
+  "coast": {
+    "title": "辻堂海岸の軍事演習場",
+    "text": "辻堂海岸には海軍の演習場がありました。戦後は接収され、1959年に米軍から国へ返還されました。現在の辻堂西海岸・茅ヶ崎市汐見台にあたる一帯です。",
+    "url": "https://digital.city.fujisawa.kanagawa.jp/digital/exhibition/digital.php?id=13",
+    "source": "藤沢市文書館「辻堂海岸の300年」"
+  },
+  "july30": {
+    "title": "1945年7月30日・辻堂の工場への攻撃",
+    "text": "辻堂駅北側の住友特殊製鋼の工場が攻撃を受け、従業員4人が亡くなり、重傷の1人も翌31日に亡くなったと記録されています。本作の主人公と家族は、この5人をモデルにした人物ではありません。",
+    "url": "https://www.soumu.go.jp/main_sosiki/daijinkanbou/sensai/situation/state/kanto_23.html",
+    "source": "総務省「藤沢市における戦災の状況」／既存作品の資料台帳に基づく（今回の再取得は未完了）"
+  },
+  "aug13": {
+    "title": "1945年8月13日・再び工場への攻撃",
+    "text": "修復された工場は再び攻撃を受けましたが、この攻撃による死傷者はなく、施設の被害も軽微だったと記録されています。本作も、この攻撃による架空の死傷者は加えていません。",
+    "url": "https://www.soumu.go.jp/main_sosiki/daijinkanbou/sensai/situation/state/kanto_23.html",
+    "source": "総務省「藤沢市における戦災の状況」／既存作品の資料台帳に基づく（今回の再取得は未完了）"
+  },
+  "aug15": {
+    "title": "1945年8月15日・終戦を伝える放送",
+    "text": "8月15日に終戦を伝える放送が行われました。主人公が放送を聞く場所や反応、家族の会話は創作です。",
+    "url": "../sources.html",
+    "source": "既存作品の資料一覧・終戦と藤沢海軍航空隊の記録"
+  },
+  "school": {
+    "title": "下土棚にあった海軍電測学校",
+    "text": "下土棚の引地川西岸には、レーダーの操作員を養成する海軍電測学校がありました。戦後の跡地利用を経て、地域は工業開発へ向かいます。「湘南台」は戦後に成立した地名であり、本編の1945年の会話では使っていません。",
+    "url": "https://digital.city.fujisawa.kanagawa.jp/digital/exhibition/digital.php?id=15",
+    "source": "藤沢市文書館「湘南台の誕生」"
+  }
+}
