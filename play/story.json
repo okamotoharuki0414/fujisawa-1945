@@ -9,7 +9,7 @@
     "choices": [
       {
         "label": "少し千代に分ける",
-        "result": "千代は礼を言い、匙を動かした。あなたは残りをゆっくり食べた。空腹は残った。母が、鍋に残った分を三人の茶碗へ少しずつ足した。",
+        "result": "あなたは茶碗に残った粥を、少し千代に分けた。千代は礼を言い、匙を動かした。あなたは残りをゆっくり食べた。空腹は残った。母が、鍋に残った分を三人の茶碗へ少しずつ足した。",
         "h": -8,
         "f": -4,
         "flag": "share",
@@ -30,7 +30,13 @@
     ],
     "chapter": 1,
     "fact": null,
-    "echo": null
+    "echo": null,
+    "kind": "narrative",
+    "autoRules": [
+      {
+        "choice": 0
+      }
+    ]
   },
   {
     "date": "1945年4月9日",
@@ -63,7 +69,13 @@
     ],
     "chapter": 1,
     "fact": null,
-    "echo": null
+    "echo": null,
+    "kind": "narrative",
+    "autoRules": [
+      {
+        "choice": 1
+      }
+    ]
   },
   {
     "date": "1945年4月15日",
@@ -106,7 +118,8 @@
     ],
     "chapter": 1,
     "fact": null,
-    "echo": null
+    "echo": null,
+    "kind": "decision"
   },
   {
     "date": "1945年4月22日",
@@ -118,7 +131,7 @@
     "choices": [
       {
         "label": "母も交えて、落ち合う場所と順番を決める",
-        "result": "借家の前、その次は佐伯さんの家。待つ順番も決めた。千代は指を二本立てて、何度も確かめた。",
+        "result": "母も一緒に、三人で待つ場所を決めた。借家の前、その次は佐伯さんの家。待つ順番も決めた。千代は指を二本立てて、何度も確かめた。",
         "h": -4,
         "f": 0,
         "flag": "meeting",
@@ -142,7 +155,13 @@
     "echo": {
       "flag": "share",
       "text": "千代が袖をつかむ。粥を分けた夜も、こんなふうにあなたのそばを離れなかった。"
-    }
+    },
+    "kind": "narrative",
+    "autoRules": [
+      {
+        "choice": 0
+      }
+    ]
   },
   {
     "date": "1945年5月8日",
@@ -154,7 +173,7 @@
     "choices": [
       {
         "label": "話の出どころを、佐伯さんとたどる",
-        "result": "何人かに尋ねると、親戚に食べ物を届ける話が、誰でも受け取れる話に変わっていた。遠出する理由はなくなった。",
+        "result": "何人かに尋ねると、親戚に食べ物を届ける話が、誰でも受け取れる話に変わっていた。遠出する理由はなくなった。佐伯さんとは、気になることがあれば互いに様子を知らせ合う約束をした。",
         "h": -5,
         "f": 0,
         "flag": "verified",
@@ -185,7 +204,8 @@
     ],
     "chapter": 2,
     "fact": null,
-    "echo": null
+    "echo": null,
+    "kind": "decision"
   },
   {
     "date": "1945年5月18日",
@@ -197,7 +217,7 @@
     "choices": [
       {
         "label": "時間がかかっても、道を戻る",
-        "result": "遅くなった理由を話すと、母は荷物より先にあなたの顔を見た。「帰ってきたなら、それでいい」。",
+        "result": "足場を渡らず、来た道を戻った。遅くなった理由を話すと、母は荷物より先にあなたの顔を見た。「帰ってきたなら、それでいい」。",
         "h": -6,
         "f": -3,
         "flag": "safeRoad",
@@ -214,21 +234,21 @@
         "need": "detour",
         "death": null,
         "remove": null
-      },
-      {
-        "label": "近道の板を渡る",
-        "result": "板は体重を支えきれなかった。家では、千代が食事を始めずに待っていた。あなたはその晩、家へ帰れなかった。",
-        "h": 0,
-        "f": 0,
-        "flag": null,
-        "need": null,
-        "death": "water",
-        "remove": null
       }
     ],
     "chapter": 2,
     "fact": null,
-    "echo": null
+    "echo": null,
+    "kind": "narrative",
+    "autoRules": [
+      {
+        "flag": "detour",
+        "choice": 1
+      },
+      {
+        "choice": 0
+      }
+    ]
   },
   {
     "date": "1945年5月下旬",
@@ -261,7 +281,13 @@
     ],
     "chapter": 2,
     "fact": null,
-    "echo": null
+    "echo": null,
+    "kind": "narrative",
+    "autoRules": [
+      {
+        "choice": 0
+      }
+    ]
   },
   {
     "date": "1945年6月4日",
@@ -279,7 +305,10 @@
         "flag": "contact",
         "need": "kit",
         "death": null,
-        "remove": null
+        "remove": null,
+        "extraFlags": [
+          "fastContact"
+        ]
       },
       {
         "label": "帳面の連絡先を写して、手紙を託す",
@@ -289,11 +318,14 @@
         "flag": "contact",
         "need": "address",
         "death": null,
-        "remove": null
+        "remove": null,
+        "extraFlags": [
+          "fastContact"
+        ]
       },
       {
         "label": "佐伯さんに口頭で伝えてもらう",
-        "result": "同じ名前の家がないか、何度か尋ねられた。届ける人が母の言葉を繰り返し、確かめてから出発した。",
+        "result": "届ける人は、母の言葉を何度も繰り返して確かめた。手紙よりも伝言に時間がかかり、返事がいつ来るかはわからなかった。",
         "h": -7,
         "f": 0,
         "flag": "contact",
@@ -304,40 +336,61 @@
     ],
     "chapter": 3,
     "fact": null,
-    "echo": null
+    "echo": null,
+    "kind": "narrative",
+    "autoRules": [
+      {
+        "flag": "kit",
+        "choice": 0
+      },
+      {
+        "flag": "address",
+        "choice": 1
+      },
+      {
+        "choice": 2
+      }
+    ]
   },
   {
     "date": "1945年6月14日",
     "place": "辻堂・家の中",
     "title": "いつもと違う熱",
-    "text": "体が重い。立ち上がると目の前が暗くなる。母が額に手を当てた。引き受けた仕事があるが、今夜も眠れなければ、明日の支度は難しそうだった。",
+    "text": "熱が続き、立ち上がると目の前が暗くなる。仕上げを待つ仕事があるが、針を持つ手も震える。今は少し動けても、数日無理を重ねれば、誰かに助けを求めに行くことさえ難しくなりそうだった。",
     "speaker": "ふみ・母",
     "line": "今日は横になって。仕事の相手には私が話してくる。",
     "choices": [
       {
-        "label": "仕事を休み、母に相談して手当てを受ける",
-        "result": "母が人を頼り、必要な手当てを探してくれた。数日、食べて眠ることだけをした。",
-        "h": 12,
+        "label": "仕事をすべて預け、手当てに専念する",
+        "result": "母に仕事の相手への連絡を頼んだ。布を机に置き、今日は眠ることにした。",
+        "h": 10,
         "f": -8,
-        "flag": "treated",
-        "need": null,
-        "death": null,
-        "remove": null
+        "flag": "treated"
       },
       {
-        "label": "仕事を終えてから休むと伝える",
-        "result": "針を持っても手が震えた。途中で布を置いたが、熱は下がらない。翌朝、起き上がるのがさらに難しくなった。",
-        "h": -16,
+        "label": "急ぐ分だけ母と分け、短い時間で切り上げる",
+        "result": "母と仕事を分け、途中でも横になると約束した。終わらない分は、待ってもらうことにした。",
+        "h": -3,
         "f": -4,
-        "flag": "fever",
-        "need": null,
-        "death": null,
-        "remove": null
+        "flag": "partialWork"
+      },
+      {
+        "label": "納期を優先し、休まず仕事を続ける",
+        "result": "今日は終わらせよう、と布を引き寄せた。その晩も、熱は下がらなかった。",
+        "h": -18,
+        "f": -5,
+        "flag": "overwork",
+        "risk": true
       }
     ],
     "chapter": 3,
     "fact": null,
-    "echo": null
+    "echo": {
+      "flag": "verified",
+      "text": "佐伯さんとは互いに様子を知らせ合う約束がある。もし返事がなければ、母からも様子を伝えてもらえる。"
+    },
+    "kind": "decision",
+    "fallbackNote": "仕事を続けるなら、具合が悪くなったときに誰が気づけるかも考えなければならない。"
   },
   {
     "date": "1945年6月20日",
@@ -355,15 +408,27 @@
         "flag": "recovered",
         "need": null,
         "death": null,
-        "remove": null
+        "remove": null,
+        "variants": [
+          {
+            "flag": "overwork",
+            "result": "いつもの返事がないことを気にして、佐伯さんが訪ねてきた。仕事を預け、母と手当てを続けた。回復するまで、何日もかかった。",
+            "h": 6
+          },
+          {
+            "flag": "partialWork",
+            "result": "母が残りの仕事を引き取り、佐伯さんへ届けてくれた。休む時間が増え、少しずつ熱が引いた。",
+            "h": 10
+          }
+        ]
       },
       {
         "label": "助けを断り、残った仕事を続ける",
-        "result": "熱は下がらず、意識が途切れる時間が長くなった。母が助けを探したときには、体はもう持ちこたえられなかった。",
+        "result": "数日間、仕事を続けるうちに熱が上がり、言葉も途切れるようになった。母が助けを探したが、体はもう持ちこたえられなかった。",
         "h": 0,
         "f": 0,
         "flag": null,
-        "need": "fever",
+        "need": "overwork",
         "death": "illness",
         "remove": null
       },
@@ -380,7 +445,18 @@
     ],
     "chapter": 3,
     "fact": null,
-    "echo": null
+    "echo": null,
+    "kind": "narrative",
+    "autoRules": [
+      {
+        "flag": "overwork",
+        "notFlag": "verified",
+        "choice": 1
+      },
+      {
+        "choice": 0
+      }
+    ]
   },
   {
     "date": "1945年7月2日",
@@ -413,7 +489,13 @@
     ],
     "chapter": 4,
     "fact": "coast",
-    "echo": null
+    "echo": null,
+    "kind": "narrative",
+    "autoRules": [
+      {
+        "choice": 0
+      }
+    ]
   },
   {
     "date": "1945年7月12日",
@@ -425,7 +507,7 @@
     "choices": [
       {
         "label": "火を落とし、布を離してから行く",
-        "result": "千代は待っていた。二人で箱を戻し、台所へ帰る。湯は冷めかけていたが、沸かし直せばよかった。",
+        "result": "火を落とし、乾いた布を離してから外へ出た。千代は待っていた。二人で箱を戻し、台所へ帰る。湯は冷めかけていたが、沸かし直せばよかった。",
         "h": -2,
         "f": 0,
         "flag": "fireSafe",
@@ -442,21 +524,17 @@
         "need": null,
         "death": null,
         "remove": null
-      },
-      {
-        "label": "すぐ戻るつもりで、火をそのままにする",
-        "result": "戻ったとき、布から火が広がっていた。中へ戻ろうとしたあなたは煙に巻かれ、戸口までたどり着けなかった。",
-        "h": 0,
-        "f": 0,
-        "flag": null,
-        "need": null,
-        "death": "fire",
-        "remove": null
       }
     ],
     "chapter": 4,
     "fact": null,
-    "echo": null
+    "echo": null,
+    "kind": "narrative",
+    "autoRules": [
+      {
+        "choice": 0
+      }
+    ]
   },
   {
     "date": "1945年7月21日",
@@ -509,7 +587,8 @@
     ],
     "chapter": 4,
     "fact": null,
-    "echo": null
+    "echo": null,
+    "kind": "decision"
   },
   {
     "date": "1945年7月30日",
@@ -542,7 +621,17 @@
     ],
     "chapter": 5,
     "fact": "july30",
-    "echo": null
+    "echo": null,
+    "kind": "narrative",
+    "autoRules": [
+      {
+        "flag": "verified",
+        "choice": 1
+      },
+      {
+        "choice": 0
+      }
+    ]
   },
   {
     "date": "1945年8月2日",
@@ -554,7 +643,7 @@
     "choices": [
       {
         "label": "前に決めた待ち合わせと、連絡先を順に確認する",
-        "result": "約束した場所に伝言を残し、返事を待った。行き違いがほどけ、家族全員の居場所と連絡方法を確認できた。",
+        "result": "紙に残した連絡先を手がかりに、親戚から返事が届いた。母と千代の居場所を確かめ、これから会う段取りを相談できるようになった。",
         "h": -4,
         "f": -2,
         "flag": "reunion",
@@ -580,7 +669,13 @@
         "flag": "waitLetters",
         "need": null,
         "death": null,
-        "remove": null
+        "remove": null,
+        "variants": [
+          {
+            "flag": "together",
+            "result": "母と千代と、届いた知らせを一つずつ確かめた。親戚の新しい住所を帳面に書き足した。"
+          }
+        ]
       }
     ],
     "chapter": 5,
@@ -604,7 +699,21 @@
       },
       {
         "flag": "together",
-        "text": "母と千代が親戚へ伝言を届けに出ていた。帰りを待っていると、「もう帰ったはず」と別の人が言う。三人で暮らしていても、外出先まではわからない。日付と行き先を確かめ直した。"
+        "text": "三人で食卓を囲み、親戚から届いた知らせを読んだ。変わった住所があれば帳面に書き直す。家族がそろっていても、離れた人の暮らしは確かめなければわからない。"
+      }
+    ],
+    "kind": "narrative",
+    "autoRules": [
+      {
+        "flag": "together",
+        "choice": 2
+      },
+      {
+        "flag": "fastContact",
+        "choice": 0
+      },
+      {
+        "choice": 2
       }
     ]
   },
@@ -618,7 +727,7 @@
     "choices": [
       {
         "label": "針箱を使い、袋を直す仕事をする",
-        "result": "針箱は、ただ持っているだけの荷物ではなくなった。袋を直し、礼の食べ物を家へ持ち帰った。",
+        "result": "持ってきた針箱を開け、預かった袋を直した。穴を補ったところを佐伯さんに見せ、礼の食べ物を家へ持ち帰った。",
         "h": -6,
         "f": 20,
         "flag": "craft",
@@ -656,11 +765,37 @@
         "need": null,
         "death": null,
         "remove": null
+      },
+      {
+        "label": "連絡帳をもとに、仕事を分けてもらえる相手へ便りを出す",
+        "result": "帳面の連絡先を確かめ、佐伯さんに手紙を託した。数日後、家でできる繕い物と食べ物が届いた。",
+        "h": -3,
+        "f": 12,
+        "flag": "letterWork",
+        "need": "address"
       }
     ],
     "chapter": 5,
     "fact": null,
-    "echo": null
+    "echo": null,
+    "kind": "narrative",
+    "autoRules": [
+      {
+        "flag": "kit",
+        "choice": 0
+      },
+      {
+        "flag": "reserve",
+        "choice": 1
+      },
+      {
+        "flag": "address",
+        "choice": 4
+      },
+      {
+        "choice": 3
+      }
+    ]
   },
   {
     "date": "1945年8月13日",
@@ -683,7 +818,13 @@
     ],
     "chapter": 5,
     "fact": "aug13",
-    "echo": null
+    "echo": null,
+    "kind": "narrative",
+    "autoRules": [
+      {
+        "choice": 0
+      }
+    ]
   },
   {
     "date": "1945年8月15日",
@@ -695,7 +836,7 @@
     "choices": [
       {
         "label": "聞き取れたことと、人から聞いたことを分けて書く",
-        "result": "帳面には空白が残った。わからなかったところを、わかったふりで埋めるのはやめた。",
+        "result": "聞き取れた言葉を帳面に書いた。帳面には空白が残った。わからなかったところを、わかったふりで埋めるのはやめた。",
         "h": 0,
         "f": 0,
         "flag": "record",
@@ -716,7 +857,13 @@
     ],
     "chapter": 6,
     "fact": "aug15",
-    "echo": null
+    "echo": null,
+    "kind": "narrative",
+    "autoRules": [
+      {
+        "choice": 0
+      }
+    ]
   },
   {
     "date": "1945年8月21日",
@@ -738,7 +885,7 @@
       },
       {
         "label": "家に残り、今ある食べ物で数日をしのぐ",
-        "result": "食べ物を小分けにした。底が見えたときには、誰かに相談しようと考えた。",
+        "result": "まずは家で暮らしを立て直そうと、食べ物を小分けにした。何日かは持ちそうだが、次の分を探す力を残しておきたかった。",
         "h": -8,
         "f": -14,
         "flag": "isolate",
@@ -750,7 +897,8 @@
     ],
     "chapter": 6,
     "fact": null,
-    "echo": null
+    "echo": null,
+    "kind": "decision"
   },
   {
     "date": "1945年8月25日",
@@ -762,8 +910,8 @@
     "choices": [
       {
         "label": "佐伯さんに状況を話し、助けを求める",
-        "result": "残りがどれくらいかを具体的に話した。近くの家と仕事を分け、食事をつなげた。",
-        "h": 10,
+        "result": "何日も姿を見ないことを気にして、佐伯さんが訪ねてきた。残りの食べ物を見せると、しばらく食事を届けてくれることになった。あなたはまず、体を休めることにした。",
+        "h": -5,
         "f": 18,
         "flag": "acceptedHelp",
         "need": null,
@@ -771,14 +919,11 @@
         "remove": null
       },
       {
-        "label": "相談には行かず、食べる量を減らしてしのぐ",
-        "result": "食事を減らし続け、戸口まで歩く力も失った。近所の人が気づいたときには、衰弱が進みすぎていた。",
-        "h": 0,
-        "f": 0,
-        "flag": null,
-        "need": "isolate",
-        "death": "hunger",
-        "remove": null
+        "label": "家で体を休める",
+        "result": "佐伯さんの届けてくれた食事をとり、体を休めた。",
+        "h": 5,
+        "f": 5,
+        "flag": "acceptedHelp"
       },
       {
         "label": "共同の食事を続け、次の当番を引き受ける",
@@ -799,6 +944,16 @@
         "flag": "community",
         "text": "共同の食事を始めて、数日がたった。今日の分はあるが、次の食べ物の当てはまだ決まらない。食べられる日が続くよう、誰が何をするか相談する必要があった。",
         "line": "今日だけでなく、明日の分も考えよう。"
+      }
+    ],
+    "kind": "narrative",
+    "autoRules": [
+      {
+        "flag": "community",
+        "choice": 2
+      },
+      {
+        "choice": 0
       }
     ]
   },
@@ -836,7 +991,13 @@
     "echo": {
       "flag": "verified",
       "text": "食べ物のうわさをたどったときも、聞く人によって話が違った。今度も、家の名前と場所を最後まで確かめよう。"
-    }
+    },
+    "kind": "narrative",
+    "autoRules": [
+      {
+        "choice": 0
+      }
+    ]
   },
   {
     "date": "1945年9月12日",
@@ -848,17 +1009,23 @@
     "choices": [
       {
         "label": "連絡を取り、三人で暮らす準備をする",
-        "result": "寝る場所と仕事を分け直した。三人そろえば全部解決するわけではない。それでも、夕飯の時刻を一緒に決められた。",
+        "result": "早めに相談ができたので、寝る場所と仕事を分け直せた。三人で暮らす準備が整い、夕飯の時刻を一緒に決めた。",
         "h": -6,
         "f": -5,
         "flag": "allHome",
         "need": "reunion",
         "death": null,
-        "remove": null
+        "remove": null,
+        "variants": [
+          {
+            "flag": "together",
+            "result": "借家に残った三人で、仕事と家事の分担を決め直した。忙しい日にも、夕飯の時刻には顔を合わせることにした。"
+          }
+        ]
       },
       {
         "label": "いまの暮らしを続け、会う日と手紙の送り先を決める",
-        "result": "家族がいる場所を帳面に書き直した。会えない日にも、次に連絡する日を決めておいた。",
+        "result": "返事を待つ間、それぞれの場所で仕事が始まっていた。すぐには戻らず、今の暮らしを続けることにした。次に手紙を出す日を、帳面に書いた。",
         "h": 2,
         "f": 0,
         "flag": "keepHomes",
@@ -876,6 +1043,20 @@
         "text": "三人で借家に残ったまま、ひと夏を越えた。この先も同じ暮らしを続けられるか、母と相談する。仕事と家事を分け直し、食事を一緒にとる日を決めることから始めよう。",
         "speaker": "ふみ・母",
         "line": "忙しくても、顔を合わせる時間はつくろうね。"
+      }
+    ],
+    "kind": "narrative",
+    "autoRules": [
+      {
+        "flag": "together",
+        "choice": 0
+      },
+      {
+        "flag": "fastContact",
+        "choice": 0
+      },
+      {
+        "choice": 1
       }
     ]
   },
@@ -927,10 +1108,7 @@
         "death": null,
         "remove": null,
         "needAny": [
-          "treated",
-          "recovered",
-          "community",
-          "care"
+          "community"
         ]
       },
       {
@@ -951,6 +1129,7 @@
     ],
     "chapter": 7,
     "fact": null,
-    "echo": null
+    "echo": null,
+    "kind": "decision"
   }
 ]
