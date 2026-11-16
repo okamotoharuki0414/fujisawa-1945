@@ -1,5 +1,5 @@
 (async()=>{
-const $=id=>document.getElementById(id),KEY='fujisawa-survival-v2';let scenes,facts,state,timer=null,auto=true,storage=true,speed=1;
+const $=id=>document.getElementById(id),KEY='fujisawa-survival-v2';let scenes,facts,state,timer=null,auto=true,storage=true,speed=1,introActive=false;
 const chapters=['小さな食卓','確かめる道','預ける仕事','手元の備え','行き違う知らせ','終わっても続く日々','次の暮らし'];
 const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 try{[scenes,facts]=await Promise.all(['story.json','facts.json'].map(async p=>{let r=await fetch(p);if(!r.ok)throw Error(p);return r.json()}));}catch{$('story').innerHTML='<h1>物語を読み込めませんでした</h1><p>接続を確かめて、このページを再読み込みしてください。</p>';return}
@@ -11,7 +11,7 @@ function knowledge(){return [has('meeting')?'待つ場所と順番の約束':nul
 function factHTML(key){if(!key)return '<p class="muted">この場面は創作の日常です。日付・会話・行動は、特定の証言や記録の再現ではありません。</p>';let f=facts[key];return `<span class="tag">歴史の記録</span><h3>${escape(f.title)}</h3><p>${escape(f.text)}</p><a class="factlink" href="${escape(f.url)}" target="_blank" rel="noopener">出典を読む ↗</a><p class="source muted">${escape(f.source)}</p>`}
 function cancelTimer(){if(timer)clearTimeout(timer);timer=null}
 function advance(){cancelTimer();if(state.chosen&&!Game.ending(state)){state=Game.next(state,scenes);save();render();$('story').focus();$('story').scrollIntoView({behavior:'smooth',block:'start'})}}
-function render(){cancelTimer();if(scenes[state.index].kind==='narrative'&&!state.chosen&&!state.death){state=Game.choose(state,scenes,Game.automatic(state,scenes[state.index]));save()}let original=scenes[state.index];let variant=(original.variants||[]).find(v=>has(v.flag));let s={...original,...variant},end=Game.ending(state);$('date').textContent=s.date;$('location').textContent=s.place;$('chapter').textContent=`第${s.chapter}章 / 全7章`;const decisionNumber=scenes.slice(0,state.index+1).filter(x=>x.kind==='decision').length;const readText=s.text+s.line+(state.chosen?state.log.at(-1).result:'');const seconds=Game.readSeconds(readText,speed);$('auto').textContent=auto?'Ⅱ 一時停止':'▶ 自動で再開';$('auto').setAttribute('aria-pressed',String(auto));$('progress').style.width=`${state.log.length/scenes.length*100}%`;$('chapterText').textContent=chapters[s.chapter-1];$('dots').innerHTML=scenes.map((v,i)=>`<i title="${escape(v.title)}" class="${i<state.log.length?'done':''} ${i===state.index?'current':''}"></i>`).join('');document.querySelector('.scene').dataset.chapter=s.chapter;$('sceneCaption').textContent=`第${s.chapter}章 · ${chapters[s.chapter-1]} / 風景は創作のイメージ`;
+function render(){cancelTimer();if(introActive)return;if(scenes[state.index].kind==='narrative'&&!state.chosen&&!state.death){state=Game.choose(state,scenes,Game.automatic(state,scenes[state.index]));save()}let original=scenes[state.index];let variant=(original.variants||[]).find(v=>has(v.flag));let s={...original,...variant},end=Game.ending(state);$('date').textContent=s.date;$('location').textContent=s.place;$('chapter').textContent=`第${s.chapter}章 / 全7章`;const decisionNumber=scenes.slice(0,state.index+1).filter(x=>x.kind==='decision').length;const readText=s.text+s.line+(state.chosen?state.log.at(-1).result:'');const seconds=Game.readSeconds(readText,speed);$('auto').textContent=auto?'Ⅱ 一時停止':'▶ 自動で再開';$('auto').setAttribute('aria-pressed',String(auto));$('progress').style.width=`${state.log.length/scenes.length*100}%`;$('chapterText').textContent=chapters[s.chapter-1];$('dots').innerHTML=scenes.map((v,i)=>`<i title="${escape(v.title)}" class="${i<state.log.length?'done':''} ${i===state.index?'current':''}"></i>`).join('');document.querySelector('.scene').dataset.chapter=s.chapter;$('sceneCaption').textContent=`第${s.chapter}章 · ${chapters[s.chapter-1]} / 風景は創作のイメージ`;
 $('stats').innerHTML=[['体力',state.h],['食料',state.f]].map(([l,n])=>`<div class="stat"><div class="row"><span>${l}</span><span>${n}</span></div><div class="bar"><i style="width:${n}%"></i></div></div>`).join('');$('items').innerHTML=itemNames().map(x=>`<li>${x}</li>`).join('')||'<li class="muted">持ち出す包みは、まだ決めていない</li>';$('knowledge').innerHTML=knowledge().map(x=>`<li>${x}</li>`).join('')||'<li class="muted">これから確かめていく</li>';
 let fam=Game.family(state);$('mother').textContent=[ '一緒に辻堂で暮らしている。','あなたと辻堂で暮らしている。','親戚の家で仕事を手伝っている。','千代と親戚の家で暮らしている。'][fam];$('sister').textContent=['一緒に辻堂で暮らしている。','親戚の大人に見守られて暮らしている。','あなたと辻堂で暮らしている。','母と親戚の家で暮らしている。'][fam];$('promise').textContent=has('meeting')?'待つ場所：借家の前 → 佐伯さんの家。順番も三人で確認した。':'離れたときに待つ場所は、まだ決まっていない。';$('fact').innerHTML=factHTML(s.fact);$('next').disabled=!state.chosen||!!end;$('auto').disabled=!!end;$('timeState').textContent=!storage?'このブラウザでは保存できません':end?'このプレイの結末':state.chosen?(auto?`物語は自動で進みます · 約${seconds}秒で次へ`:'一時停止中 · 次へボタンでも進めます'):`大切な選択 ${decisionNumber}/6 · 選ぶまで進みません`;
 $('log').innerHTML=state.log.slice().reverse().map(e=>`<li><time>${escape(e.date)}</time><small>${e.decision?'あなたの選択':'日々の出来事'}</small><br><strong>${escape(e.decision?e.label:e.title)}</strong><p>${escape(e.result)}</p></li>`).join('')||'<li class="muted">あなたが選んだことが、ここに残ります。</li>';
@@ -29,5 +29,17 @@ $('confirmReset').onclick=()=>{state=Game.initial();auto=true;save();$('resetDia
 $('cancelReset').onclick=()=>{$('resetDialog').close()};
 $('about').onclick=()=>{cancelTimer();$('aboutDialog').showModal()};$('closeAbout').onclick=()=>{$('aboutDialog').close()};
 for(const id of ['resetDialog','aboutDialog'])$(id).addEventListener('close',render);
-document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelTimer();else render()});render();
+const intro=$('introDialog'),video=$('introVideo');
+function finishIntro(){video.pause();introActive=false;try{localStorage.setItem('fujisawa-opening-v1','seen')}catch{}intro.close();render();$('story').focus()}
+function openIntro(){cancelTimer();introActive=true;video.pause();video.currentTime=0;$('playIntro').textContent='▶ オープニングを再生（音声あり）';$('introStatus').textContent='字幕付き · 音声なしでも内容がわかります';intro.showModal()}
+$('opening').onclick=openIntro;$('skipIntro').onclick=finishIntro;
+$('playIntro').onclick=()=>{video.play().catch(()=>{$('introStatus').textContent='再生できませんでした。映像の内容を文章で読むか、本編へ進めます。'})};
+video.addEventListener('play',()=>{$('playIntro').textContent='▶ 再生を続ける';$('introStatus').textContent='映像の終了後、本編へ進みます。スキップもできます。'});
+video.addEventListener('ended',finishIntro);
+video.addEventListener('error',()=>{$('introStatus').textContent='映像を読み込めませんでした。下の説明を読むか、本編へ進めます。'});
+intro.addEventListener('cancel',e=>{e.preventDefault();finishIntro()});
+intro.querySelector('details').addEventListener('toggle',e=>{if(e.target.open)video.pause()});
+let seen=false;try{seen=localStorage.getItem('fujisawa-opening-v1')==='seen'}catch{}
+if(!seen)openIntro();
+document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelTimer();if(introActive)video.pause()}else render()});render();
 })();
