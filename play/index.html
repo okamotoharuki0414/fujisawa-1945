@@ -6,9 +6,9 @@
 <dialog id="aboutDialog"><h2>あの夏を越えて</h2><p>1945年の藤沢を舞台にした、主人公一人の選択ゲームです。春は母・ふみ、妹・千代と暮らす架空の少女です。旧作品に登場する人物の実話や続編ではありません。</p><p>場所と確認できる歴史上の出来事を土台にしています。人物・会話・私的な事故・日々の日付・戦後の暮らしは創作です。画面の「資料」で、歴史の記録と物語を分けています。</p><p>大きな結末は、生き延びたあとの仕事4種類と病気による死の1種類です。家族がどこで暮らすかは、後日談に反映されます。病気の経過は創作で、実際の患者の転帰を予測するものではありません。</p><p>物語は自動で進みます。選ぶのは重要な6場面だけで、選ぶまで必ず止まります。持ち物や情報によって、その間の出来事も変わります。「一時停止」「読む速さ」「次へ」で、自分のペースに合わせられます。別のタブや資料を開いている間は進みません。</p><p>進行はこのブラウザに保存します。この版は選択の構成を変えたため、以前の版とは別の進行として始まります。「最初から」で今回の進行を消してやり直せます。過去のプレイ記録は別に蓄積しません。</p><h3>資料と制作</h3><div id="sourceList"></div><p>体験設計の参考：<a href="https://1in8b.life/ja/" target="_blank" rel="noopener">80億分の1</a>。文章と画面は本作向けに制作。設計はChatGPTとClaudeのレビューをもとに構成しています。</p><button id="closeAbout">閉じる</button></dialog>
 <dialog id="resetDialog"><h2>最初からやり直しますか？</h2><p>このプレイの進行と記録を消し、4月6日から始めます。</p><button id="confirmReset">最初から始める</button> <button id="cancelReset">戻る</button></dialog>
 <dialog id="introDialog" aria-labelledby="introTitle">
-<div class="intro-heading"><div><span class="tag">PROLOGUE · はじめる前に</span><h2 id="introTitle">あの夏を越えて</h2></div><button id="skipIntro">映像をスキップして本編へ →</button></div>
-<p class="intro-summary">舞台と主人公、遊び方、大切な注意点を短い映像で紹介します。</p>
-<video id="introVideo" controls playsinline preload="metadata" poster="media/opening-poster.jpg" aria-label="あの夏を越えて オープニング映像"><source src="media/opening.mp4" type="video/mp4"><track kind="subtitles" src="media/opening.vtt" srclang="ja" label="日本語ナレーション">このブラウザでは映像を再生できません。下の説明を読むか、本編へ進んでください。</video>
-<div class="intro-actions"><button id="playIntro">▶ オープニングを再生（音声あり）</button><span class="muted" id="introStatus">字幕付き · 音声なしでも内容がわかります</span></div>
-<details class="intro-transcript"><summary>映像の内容を文章で読む</summary><p>1945年の藤沢。あなたは17歳の春。母と妹と辻堂で暮らしています。食べ物、仕事、家族の居場所。変わっていく暮らしをつなぎ、あの夏を越えていく物語です。</p><p>物語は自動で進み、重要な6場面だけで選択します。選択中は時間が止まります。持ち物・情報・約束は、その先の出来事や後日談に影響します。</p><p>読む速さの変更、一時停止、次へ進む操作ができます。体力・食料の数値だけで突然死亡することはありません。ただし、病気や死を描く場面と、生き延びられない結末があります。</p><p>場所や歴史上の出来事を土台にしたフィクションです。人物・会話・日々の行動は創作で、実際の犠牲者の人生を再現するものではありません。</p><p>進行は同じブラウザに保存されます。出典は「作品と資料」から読めます。</p></details>
+<div class="intro-heading"><div><span class="tag">PROLOGUE · はじめる前に</span><h2 id="introTitle">あの夏を越えて</h2></div><button id="skipIntro">本編へ進む →</button></div>
+<p class="intro-summary">4枚の画像で、舞台と遊び方をご案内します。自分のペースで読み進めてください。</p>
+<img id="introImage" src="media/opening-1.jpg" alt="1945年の藤沢をイメージした町並み" width="1280" height="630">
+<div class="intro-copy" aria-live="polite"><h3 id="introCardTitle"></h3><p id="introCardText"></p></div>
+<div class="intro-actions"><button id="prevIntro">← 戻る</button><span id="introCount" class="muted"></span><button id="nextIntro">次へ →</button></div>
 </dialog><footer>あの夏を越えて · 人物と物語はフィクションです · <a href="../sources.html">資料一覧</a></footer><script src="engine.js"></script><script src="ui.js"></script></body></html>

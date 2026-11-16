@@ -29,17 +29,21 @@ $('confirmReset').onclick=()=>{state=Game.initial();auto=true;save();$('resetDia
 $('cancelReset').onclick=()=>{$('resetDialog').close()};
 $('about').onclick=()=>{cancelTimer();$('aboutDialog').showModal()};$('closeAbout').onclick=()=>{$('aboutDialog').close()};
 for(const id of ['resetDialog','aboutDialog'])$(id).addEventListener('close',render);
-const intro=$('introDialog'),video=$('introVideo');
-function finishIntro(){video.pause();introActive=false;try{localStorage.setItem('fujisawa-opening-v1','seen')}catch{}intro.close();render();$('story').focus()}
-function openIntro(){cancelTimer();introActive=true;video.pause();video.currentTime=0;$('playIntro').textContent='▶ オープニングを再生（音声あり）';$('introStatus').textContent='字幕付き · 音声なしでも内容がわかります';intro.showModal()}
+const intro=$('introDialog');let introPage=0;
+const introCards=[
+ ['1945年、藤沢。','あなたは17歳の春。母・ふみ、妹・千代と辻堂で暮らしています。食べ物、仕事、家族の居場所。変わっていく暮らしをつなぎ、また三人で同じ食卓を囲むことを願う物語です。','藤沢の町並みと、主人公・春の紹介'],
+ ['物語は自動で進みます','選ぶのは重要な6場面だけ。選択肢が出たら、選ぶまで物語は止まります。「一時停止」「読む速さ」「次へ」で読むペースを調整できます。進行は同じブラウザに保存されます。','自動で進む物語の途中に、6回の選択があることを示す図'],
+ ['手元の物と、知っていること','持ち物・確かめた情報・家族との約束が、その先の出来事や後日談に影響します。体力と食料は暮らしの目安で、数値だけで突然死亡することはありません。','持ち物、情報、約束がその先の出来事につながる図'],
+ ['はじめる前に','病気や死を描く場面と、生き延びられない結末があります。場所と確認できる歴史上の出来事を土台にしていますが、人物・会話・日々の行動は創作です。実在の犠牲者の人生を再現するものではありません。出典は「作品と資料」から読めます。','歴史の記録と、創作の人物・会話を区別する説明']
+];
+function showIntroPage(){const c=introCards[introPage];$('introImage').src=`media/opening-${introPage+1}.jpg`;$('introImage').alt=c[2];$('introCardTitle').textContent=c[0];$('introCardText').textContent=c[1];$('introCount').textContent=`${introPage+1} / ${introCards.length}`;$('prevIntro').disabled=introPage===0;$('nextIntro').textContent=introPage===introCards.length-1?'本編へ進む →':'次へ →';intro.scrollTop=0}
+function finishIntro(){introActive=false;try{localStorage.setItem('fujisawa-opening-images-v1','seen')}catch{}intro.close();render();$('story').focus()}
+function openIntro(){cancelTimer();introActive=true;introPage=0;showIntroPage();intro.showModal()}
 $('opening').onclick=openIntro;$('skipIntro').onclick=finishIntro;
-$('playIntro').onclick=()=>{video.play().catch(()=>{$('introStatus').textContent='再生できませんでした。映像の内容を文章で読むか、本編へ進めます。'})};
-video.addEventListener('play',()=>{$('playIntro').textContent='▶ 再生を続ける';$('introStatus').textContent='映像の終了後、本編へ進みます。スキップもできます。'});
-video.addEventListener('ended',finishIntro);
-video.addEventListener('error',()=>{$('introStatus').textContent='映像を読み込めませんでした。下の説明を読むか、本編へ進めます。'});
+$('prevIntro').onclick=()=>{if(introPage>0){introPage--;showIntroPage()}};
+$('nextIntro').onclick=()=>{if(introPage<introCards.length-1){introPage++;showIntroPage()}else finishIntro()};
 intro.addEventListener('cancel',e=>{e.preventDefault();finishIntro()});
-intro.querySelector('details').addEventListener('toggle',e=>{if(e.target.open)video.pause()});
-let seen=false;try{seen=localStorage.getItem('fujisawa-opening-v1')==='seen'}catch{}
+let seen=false;try{seen=localStorage.getItem('fujisawa-opening-images-v1')==='seen'}catch{}
 if(!seen)openIntro();
-document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelTimer();if(introActive)video.pause()}else render()});render();
+document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelTimer();else render()});render();
 })();
